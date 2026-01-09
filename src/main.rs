@@ -144,7 +144,10 @@ impl eframe::App for Switch2App {
                         // Switch to the window
                         #[cfg(target_os = "windows")]
                         unsafe {
-                            SetForegroundWindow(win.hwnd);
+                            let result = SetForegroundWindow(win.hwnd);
+                            if result.is_err() || !result.as_bool() {
+                                eprintln!("Failed to switch to window: {}", win.title);
+                            }
                         }
                     }
                 }
